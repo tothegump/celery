@@ -360,6 +360,7 @@ class report(Command):
     """Shows information useful to include in bug-reports."""
 
     def run(self, *args, **kwargs):
+        print('hi, zjm~')
         self.out(self.app.bugreport())
         return EX_OK
 

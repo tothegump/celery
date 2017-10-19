@@ -27,15 +27,24 @@ from celery import Celery
 
 app = Celery(
     'myapp',
-    broker='amqp://guest@localhost//',
+    broker='redis://www.tothegump.com//',
     # ## add result backend here if needed.
-    # backend='rpc'
+    # result_backend='redis://www.tothegump.com/:6379/3',
+    backend='redis://www.tothegump.com:6379/3',
 )
 
 
 @app.task
 def add(x, y):
     return x + y
+
+
+@app.task(bind=True)
+def echo(self, name):
+    print('zjm_self: {}'.format(self))
+    print('zjm_name: {}'.format(name))
+    return name
+
 
 if __name__ == '__main__':
     app.start()
