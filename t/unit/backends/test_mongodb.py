@@ -349,7 +349,8 @@ class test_MongoBackend:
             {'_id': sentinel.taskset_id})
 
     @patch('celery.backends.mongodb.MongoBackend._get_database')
-    def test_forget(self, mock_get_database):
+    def test__forget(self, mock_get_database):
+        # note: here tested _forget method, not forget method
         self.backend.taskmeta_collection = MONGODB_COLLECTION
 
         mock_database = MagicMock(spec=['__getitem__', '__setitem__'])
