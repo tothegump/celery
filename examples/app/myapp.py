@@ -27,16 +27,21 @@ from celery import Celery
 
 app = Celery(
     'myapp',
-    # broker='amqp://guest@localhost//',
-    broker='redis://localhost/1/',
+    broker='amqp://guest@localhost//',
+    # broker='redis://localhost/1',
     # ## add result backend here if needed.
-    backend='redis://localhost/2/'
+    backend='redis://localhost/2'
 )
 
 
 @app.task
 def add(x, y):
     return x + y
+
+
+@app.task
+def print_task(val):
+    print("Running print_task. val is: {}".format(val))
 
 
 if __name__ == '__main__':
