@@ -25,14 +25,29 @@ name using the fully qualified form::
 from __future__ import absolute_import, unicode_literals
 
 from celery import Celery
+from celery.signals import celeryd_after_setup
 
-app = Celery(
-    'myapp',
-    broker='amqp://guest@localhost//',
-    # ## add result backend here if needed.
-    # backend='rpc'
-)
+app = Celery(broker="redis://localhost/2")
+# app = Celery(
+#     'myapp',
+#     broker='amqp://guest@localhost//',
+#     # ## add result backend here if needed.
+#     # backend='rpc'
+# )
 
+
+@celeryd_after_setup.connect
+def setuplog(*a, **k):
+    import logging
+
+    logging.getLogger("kombu").setLevel(logging.DEBUG)
+    logging.getLogger("celery").setLevel(logging.DEBUG)
+
+
+
+@app.task
+def hi():
+    return "hi"
 
 @app.task
 def add(x, y):
